@@ -15,26 +15,33 @@ import site.bitinit.pnd.web.controller.dto.ResponseDto;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+	private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-    @ExceptionHandler
-    public ResponseEntity<ResponseDto> dataFormatException(DataFormatException e){
-        return ResponseEntity.badRequest()
-                .body(ResponseDto.fail(e.getMessage()));
-    }
+	@ExceptionHandler
+	public ResponseEntity<ResponseDto> dataFormatException(DataFormatException e) {
+		return ResponseEntity.badRequest()
+						.body(ResponseDto.fail(e.getMessage()));
+	}
 
-    @ExceptionHandler
-    public ResponseEntity<ResponseDto> dataNotFoundException(DataNotFoundException e){
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body(ResponseDto.fail(e.getMessage()));
-    }
+	@ExceptionHandler
+	public ResponseEntity<ResponseDto> dataNotFoundException(DataNotFoundException e) {
+		return ResponseEntity
+						.status(HttpStatus.NOT_FOUND)
+						.body(ResponseDto.fail(e.getMessage()));
+	}
 
-    @ExceptionHandler
-    public ResponseEntity<ResponseDto> exception(Exception e){
-        logger.error("[system-error] {}", e);
-        return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(ResponseDto.fail("服务器错误，请联系管理员"));
-    }
+	@ExceptionHandler
+	public ResponseEntity<ResponseDto> unauthorizedException(UnauthorizedException e) {
+		return ResponseEntity
+						.status(HttpStatus.UNAUTHORIZED)
+						.body(ResponseDto.fail(e.getMessage()));
+	}
+
+	@ExceptionHandler
+	public ResponseEntity<ResponseDto> exception(Exception e) {
+		logger.error("[system-error] {}", e);
+		return ResponseEntity
+						.status(HttpStatus.INTERNAL_SERVER_ERROR)
+						.body(ResponseDto.fail("服务器错误，请联系管理员"));
+	}
 }
