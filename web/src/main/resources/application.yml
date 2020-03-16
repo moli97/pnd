@@ -1,0 +1,13 @@
+server:
+  port: 8989
+  servlet:
+    context-path: /
+pnd:
+  useMysql: true
+  mysql:
+    url: jdbc:mysql://127.0.0.1:3306/db_pnd?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: root
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
