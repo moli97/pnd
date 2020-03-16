@@ -3,17 +3,15 @@ package site.bitinit.pnd.web.filter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import site.bitinit.pnd.web.config.StorageHandler;
-import site.bitinit.pnd.web.controller.dto.ResponseDto;
-import site.bitinit.pnd.web.exception.UnauthorizedException;
+import site.bitinit.pnd.web.util.ResponseUtil;
 import site.bitinit.pnd.web.util.StringUtils;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Slf4j
@@ -32,15 +30,11 @@ public class LoginFilter implements Filter {
 		if (StringUtils.isBlank(accessToken) || StringUtils.isBlank(storageHandler.get(accessToken))) {
 			storageHandler.clearInvalid();
 			log.error(accessToken);
-			//throw new UnauthorizedException("无访问权限");
+			HttpServletResponse response = (HttpServletResponse) servletResponse;
+			response.setStatus(HttpStatus.UNAUTHORIZED.value());
+			ResponseUtil.out(response, ResponseUtil.resultMap("无访问权限"));
+			return;
 		}
 		filterChain.doFilter(servletRequest, servletResponse);
-	}
-
-	@ExceptionHandler
-	public ResponseEntity<ResponseDto> unauthorizedException(UnauthorizedException e) {
-		return ResponseEntity
-						.status(HttpStatus.UNAUTHORIZED)
-						.body(ResponseDto.fail(e.getMessage()));
 	}
 }

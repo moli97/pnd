@@ -36,6 +36,7 @@ public class StorageHandler {
 	}
 
 	public void clearInvalid() {
+		check();
 		List<String> keys = Lists.newArrayList(map.keySet());
 		for (String key : keys) {
 			ImmutablePair<String, Long> pair = map.get(key);
