@@ -7,10 +7,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import site.bitinit.pnd.web.Constants;
 import site.bitinit.pnd.web.controller.dto.ResponseDto;
+import site.bitinit.pnd.web.dao.UserMapper;
+import site.bitinit.pnd.web.entity.User;
 import site.bitinit.pnd.web.exception.UnauthorizedException;
 import site.bitinit.pnd.web.storage.RespAgent;
 import site.bitinit.pnd.web.storage.StorageHandler;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @RestController
@@ -19,10 +22,13 @@ public class TokenController {
 
 	@Autowired
 	private StorageHandler storageHandler;
+	@Autowired
+	private UserMapper userMapper;
 
 	@PostMapping("/login")
 	public ResponseEntity<ResponseDto> login(String username, String password) {
-		if (!"123456".equals(password)) {
+		User user = userMapper.findByName(username);
+		if (Objects.isNull(user) || !Objects.equals(user.getPassword(), password)) {
 			throw new UnauthorizedException("用户名或密码错误");
 		}
 		String accessToken = UUID.randomUUID().toString();
