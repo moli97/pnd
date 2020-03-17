@@ -24,14 +24,17 @@ public class LoginFilter implements Filter {
 
 	@Autowired
 	StorageHandler storageHandler;
+
 	private static final Set<String> ALLOWED_PATHS = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(Constants.API_VERSION + "/login")));
+
+	private static final String IGNORE = "download";
 
 	@Override
 	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
 
 		HttpServletRequest request = (HttpServletRequest) servletRequest;
 		String path = request.getRequestURI().substring(request.getContextPath().length()).replaceAll("[/]+$", "");
-		if (!ALLOWED_PATHS.contains(path)) {
+		if (!ALLOWED_PATHS.contains(path) && !path.contains(IGNORE)) {
 			String accessToken = request.getHeader(Constants.ACCESS_TOKEN);
 			if (StringUtils.isBlank(storageHandler.get(accessToken))) {
 				storageHandler.clearInvalid();
