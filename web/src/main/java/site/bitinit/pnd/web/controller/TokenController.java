@@ -21,12 +21,12 @@ public class TokenController {
 	private StorageHandler storageHandler;
 
 	@PostMapping("/login")
-	public ResponseEntity<ResponseDto> login(String userName, String password) {
+	public ResponseEntity<ResponseDto> login(String username, String password) {
 		if (!"123456".equals(password)) {
-			throw new UnauthorizedException();
+			throw new UnauthorizedException("用户名或密码错误");
 		}
 		String accessToken = UUID.randomUUID().toString();
-		storageHandler.put(accessToken, userName);
+		storageHandler.put(accessToken, username);
 		return ResponseEntity.ok(ResponseDto.success(accessToken));
 	}
 
@@ -39,6 +39,6 @@ public class TokenController {
 
 	@RequestMapping("/error401")
 	public ResponseEntity<ResponseDto> error() {
-		throw new UnauthorizedException("无访问权限");
+		throw new UnauthorizedException("登录已失效");
 	}
 }
