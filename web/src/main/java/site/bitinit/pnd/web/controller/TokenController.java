@@ -6,9 +6,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import site.bitinit.pnd.web.Constants;
-import site.bitinit.pnd.web.config.StorageHandler;
 import site.bitinit.pnd.web.controller.dto.ResponseDto;
 import site.bitinit.pnd.web.exception.UnauthorizedException;
+import site.bitinit.pnd.web.storage.RespAgent;
+import site.bitinit.pnd.web.storage.StorageHandler;
 
 import java.util.UUID;
 
@@ -17,21 +18,27 @@ import java.util.UUID;
 public class TokenController {
 
 	@Autowired
-	StorageHandler storageHandler;
+	private StorageHandler storageHandler;
 
 	@PostMapping("/login")
 	public ResponseEntity<ResponseDto> login(String userName, String password) {
 		if (!"123456".equals(password)) {
 			throw new UnauthorizedException();
 		}
-		String token = UUID.randomUUID().toString();
-		storageHandler.put(token, userName);
-		return ResponseEntity.ok(ResponseDto.success(token));
+		String accessToken = UUID.randomUUID().toString();
+		storageHandler.put(accessToken, userName);
+		return ResponseEntity.ok(ResponseDto.success(accessToken));
 	}
 
 	@PostMapping("/logout")
 	public ResponseEntity<ResponseDto> logout() {
-		storageHandler.remove("");
-		return ResponseEntity.ok(ResponseDto.success("testaaa"));
+		String accessToken = RespAgent.get().getAccessToken();
+		storageHandler.remove(accessToken);
+		return ResponseEntity.ok(ResponseDto.success());
+	}
+
+	@RequestMapping("/error401")
+	public ResponseEntity<ResponseDto> error() {
+		throw new UnauthorizedException("无访问权限");
 	}
 }

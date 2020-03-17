@@ -1,10 +1,11 @@
-package site.bitinit.pnd.web.config;
+package site.bitinit.pnd.web.storage;
 
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
@@ -14,6 +15,9 @@ public class StorageHandler {
 
 	public String get(String k) {
 		check();
+		if (Objects.isNull(k)) {
+			return null;
+		}
 		ImmutablePair<String, Long> pair = map.get(k);
 		if (pair == null || pair.getRight() < System.currentTimeMillis()) {
 			return null;
