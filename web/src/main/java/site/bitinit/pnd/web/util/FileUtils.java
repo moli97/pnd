@@ -51,7 +51,7 @@ public class FileUtils {
 		if (split.length > 1) {
 			fileExtension = '.' + split[split.length - 1];
 		}
-		return fileExtension;
+		return fileExtension.toLowerCase();
 	}
 
 	private static Map<String, FileType> fileTypeMap = new HashMap<>();
