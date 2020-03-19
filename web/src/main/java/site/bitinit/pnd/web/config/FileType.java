@@ -5,26 +5,26 @@ package site.bitinit.pnd.web.config;
  * @date 2020-01-11
  */
 public enum FileType {
-    /**
-     * 文件类型
-     */
-    DEFAULT,
-    FOLDER,
-    VIDEO,
-    AUDIO,
-    PDF,
-    COMPRESS_FILE,
-    PICTURE,
-    DOC,
-    PPT,
-    TXT,
-    TORRENT,
-    WEB,
-    CODE
-    ;
+	/**
+	 * 文件类型
+	 */
+	DEFAULT,
+	FOLDER,
+	VIDEO,
+	AUDIO,
+	PDF,
+	COMPRESS_FILE,
+	PICTURE,
+	DOC,
+	PPT,
+	TXT,
+	TORRENT,
+	WEB,
+	CODE,
+	EXCEL;
 
-    @Override
-    public String toString() {
-        return name().toLowerCase();
-    }
+	@Override
+	public String toString() {
+		return name().toLowerCase();
+	}
 }
