@@ -32,7 +32,7 @@ public class AdminController {
 	private AppContext appContext;
 
 	@PostMapping(value = "/upload")
-	public ResponseEntity<ResponseDto> upload(@RequestParam(value = "files", required = false) MultipartFile[] files) {
+	public ResponseEntity<ResponseDto> upload(@RequestParam(value = "file", required = false) MultipartFile[] files) {
 
 		if (files == null || files.length == 0) {
 			log.error("文件空");

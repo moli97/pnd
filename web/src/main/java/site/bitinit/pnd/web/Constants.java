@@ -25,5 +25,5 @@ public interface Constants {
 	 */
 	String UPLOAD_ROOT_KEY = "upload.root.key";
 
-	String UPLOAD_ROOT_DEFAULT = "/data/";
+	String UPLOAD_ROOT_DEFAULT = "/data/default/";
 }
