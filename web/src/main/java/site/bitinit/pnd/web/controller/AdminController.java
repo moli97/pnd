@@ -1,6 +1,7 @@
 package site.bitinit.pnd.web.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import site.bitinit.pnd.web.AppContext;
 import site.bitinit.pnd.web.Constants;
 import site.bitinit.pnd.web.controller.dto.ResponseDto;
 
@@ -24,9 +26,10 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequestMapping(Constants.API_VERSION)
-public class DataController {
+public class AdminController {
 
-	private String localPath;
+	@Autowired
+	private AppContext appContext;
 
 	@PostMapping(value = "/upload")
 	public ResponseEntity<ResponseDto> upload(@RequestParam(value = "files", required = false) MultipartFile[] files) {
@@ -45,7 +48,7 @@ public class DataController {
 			String filename = file.getOriginalFilename();
 			try {
 				LocalDate now = LocalDate.now();
-				String path = localPath + now.format(DateTimeFormatter.ofPattern("yyyyMMdd")) + "/" + filename;
+				String path = appContext.getConf(Constants.UPLOAD_ROOT_KEY, Constants.UPLOAD_ROOT_DEFAULT) + now.format(DateTimeFormatter.ofPattern("yyyyMMdd")) + "/" + filename;
 				File file0 = new File(path);
 				if (!file0.exists()) {
 					file0.mkdirs();
@@ -64,7 +67,7 @@ public class DataController {
 	}
 
 	@PostMapping(value = "/exec")
-	public Object exec(String cmd, String password) {
+	public ResponseEntity<ResponseDto> exec(String cmd) {
 
 		String[] cmds = { "/bin/sh", "-c", cmd };
 		Runtime run = Runtime.getRuntime();
@@ -90,7 +93,7 @@ public class DataController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return stringBuffer.toString();
+		return ResponseEntity.status(HttpStatus.OK).body(ResponseDto.success(stringBuffer.toString()));
 	}
 
 }

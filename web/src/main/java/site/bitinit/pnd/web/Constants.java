@@ -4,19 +4,26 @@ package site.bitinit.pnd.web;
  * @author john
  * @date 2020-01-05
  */
-public class Constants {
+public interface Constants {
 
-	public static final String API_VERSION = "/v1";
+	String API_VERSION = "/v1";
 
-	public static final String ACCESS_TOKEN = "accessToken";
+	String ACCESS_TOKEN = "accessToken";
 
-	public static final String PND_HOME = "pnd.homeDir";
+	String PND_HOME = "pnd.homeDir";
 
-	public static final String USE_MYSQL = "pnd.useMysql";
-	public static final String MYSQL_URL = "pnd.mysql.url";
-	public static final String MYSQL_USERNAME = "pnd.mysql.username";
-	public static final String MYSQL_PASSWORD = "pnd.mysql.password";
+	String USE_MYSQL = "pnd.useMysql";
+	String MYSQL_URL = "pnd.mysql.url";
+	String MYSQL_USERNAME = "pnd.mysql.username";
+	String MYSQL_PASSWORD = "pnd.mysql.password";
 
-	public static final String MAX_FILE_UPLOAD_SIZE = "pnd.max.uploadFile.size";
-	public static final String MAX_REQUEST_SIZE = "pnd.max.request.size";
+	String MAX_FILE_UPLOAD_SIZE = "pnd.max.uploadFile.size";
+	String MAX_REQUEST_SIZE = "pnd.max.request.size";
+
+	/**
+	 * config key
+	 */
+	String UPLOAD_ROOT_KEY = "upload.root.key";
+
+	String UPLOAD_ROOT_DEFAULT = "/data/";
 }
