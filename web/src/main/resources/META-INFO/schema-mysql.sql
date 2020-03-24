@@ -74,6 +74,14 @@ CREATE TABLE `user` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `app_conf` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `conf_key` varchar(100) DEFAULT NULL,
+  `conf_value` varchar(100) DEFAULT NULL,
+  `desc_info` varchar(1000) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
