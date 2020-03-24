@@ -8,6 +8,12 @@ pnd:
     url: jdbc:mysql://127.0.0.1:3306/db_pnd?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
     username: root
     password: root
+  max:
+    uploadFile:
+      size: 500MB
+    request:
+      size: 500MB
 mybatis:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
