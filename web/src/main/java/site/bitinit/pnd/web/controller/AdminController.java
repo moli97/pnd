@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import site.bitinit.pnd.web.AppContext;
 import site.bitinit.pnd.web.Constants;
 import site.bitinit.pnd.web.controller.dto.ResponseDto;
+import site.bitinit.pnd.web.dao.AppConfMapper;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -30,6 +31,8 @@ public class AdminController {
 
 	@Autowired
 	private AppContext appContext;
+	@Autowired
+	private AppConfMapper appConfMapper;
 
 	@PostMapping(value = "/upload")
 	public ResponseEntity<ResponseDto> upload(@RequestParam(value = "file", required = false) MultipartFile[] files) {
@@ -94,6 +97,11 @@ public class AdminController {
 			e.printStackTrace();
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(ResponseDto.success(stringBuffer.toString()));
+	}
+
+	@PostMapping(value = "/configs")
+	public ResponseEntity<ResponseDto> getConfigs() {
+		return ResponseEntity.status(HttpStatus.OK).body(ResponseDto.success(appConfMapper.list()));
 	}
 
 }
