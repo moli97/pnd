@@ -20,73 +20,79 @@ import java.io.File;
 @org.springframework.context.annotation.Configuration
 public class PndProperties {
 
-    /**
-     * mysql config
-     */
-    private boolean useMysql;
-    private String mysqlUrl;
-    private String mysqlUsername;
-    private String mysqlPassword;
-    private String mysqlDriver = "com.mysql.cj.jdbc.Driver";
+	/**
+	 * mysql config
+	 */
+	private boolean useMysql;
+	private String mysqlUrl;
+	private String mysqlUsername;
+	private String mysqlPassword;
+	private String mysqlDriver = "com.mysql.cj.jdbc.Driver";
 
-    private String embedDbDriver = "org.apache.derby.jdbc.EmbeddedDriver";
-    private String embedDbUrl;
-    private String embedDbUsername = "pnd";
-    private String embedDbPassword = "pnd";
+	private String embedDbDriver = "org.apache.derby.jdbc.EmbeddedDriver";
+	private String embedDbUrl;
+	private String embedDbUsername = "pnd";
+	private String embedDbPassword = "pnd";
 
-    private String pndHome;
-    private String pndDataDir;
+	private String pndHome;
+	private String pndDataDir;
 
-    private String maxFileUploadSize;
-    private String maxRequestSize;
+	private String displayPath;
+	private String displayUrl;
 
-    private final Environment env;
+	private String maxFileUploadSize;
+	private String maxRequestSize;
 
-    @Autowired
-    public PndProperties(Environment env) {
-        this.env = env;
-    }
+	private final Environment env;
 
-    @PostConstruct
-    public void init() {
-        setPndHome(getEnvProperty(Constants.PND_HOME, getSystemProperty("user.home", StringUtils.EMPTY) + File.separator + "pnd"));
-        setPndDataDir(getPndHome() + File.separator + "data");
-        setEmbedDbUrl("jdbc:derby:" + getPndDataDir() + File.separator + "db;create=true");
+	@Autowired
+	public PndProperties(Environment env) {
+		this.env = env;
+	}
 
-        setUseMysql(Boolean.valueOf(getEnvProperty(Constants.USE_MYSQL, "false")));
-        setMysqlUrl(getEnvProperty(Constants.MYSQL_URL, StringUtils.EMPTY));
-        setMysqlUsername(getEnvProperty(Constants.MYSQL_USERNAME, StringUtils.EMPTY));
-        setMysqlPassword(getEnvProperty(Constants.MYSQL_PASSWORD, StringUtils.EMPTY));
+	@PostConstruct
+	public void init() {
+		setPndHome(getEnvProperty(Constants.PND_HOME, getSystemProperty("user.home", StringUtils.EMPTY) + File.separator + "pnd"));
+		setPndDataDir(getPndHome() + File.separator + "data");
+		setEmbedDbUrl("jdbc:derby:" + getPndDataDir() + File.separator + "db;create=true");
 
-        setMaxFileUploadSize(getEnvProperty(Constants.MAX_FILE_UPLOAD_SIZE, "10MB"));
-        setMaxRequestSize(getEnvProperty(Constants.MAX_REQUEST_SIZE, "12MB"));
-    }
+		setUseMysql(Boolean.valueOf(getEnvProperty(Constants.USE_MYSQL, "false")));
+		setMysqlUrl(getEnvProperty(Constants.MYSQL_URL, StringUtils.EMPTY));
+		setMysqlUsername(getEnvProperty(Constants.MYSQL_USERNAME, StringUtils.EMPTY));
+		setMysqlPassword(getEnvProperty(Constants.MYSQL_PASSWORD, StringUtils.EMPTY));
 
-    public String getBasicResourcePath() {
-        String basicPath = getPndDataDir() + File.separator + "resources";
-        Utils.createFolders(basicPath);
-        return basicPath;
-    }
+		setMaxFileUploadSize(getEnvProperty(Constants.MAX_FILE_UPLOAD_SIZE, "10MB"));
+		setMaxRequestSize(getEnvProperty(Constants.MAX_REQUEST_SIZE, "12MB"));
 
-    public String getResourceTmpDir() {
-        String resourceTmpPath = getBasicResourcePath() + File.separator + "tmp";
-        Utils.createFolders(resourceTmpPath);
-        return resourceTmpPath;
-    }
+		setDisplayPath(getEnvProperty(Constants.PND_DISPLAY_PATH, "/data/").replace("\\", File.separator).replace("/", File.separator));
+		setDisplayUrl(getEnvProperty(Constants.PND_DISPLAY_URL, "https://data.imoli.top/"));
+	}
 
-    private String getEnvProperty(String key, String defaultVal){
-        String val = env.getProperty(key, "");
-        if (StringUtils.isBlank(val)){
-            return defaultVal;
-        }
-        return val;
-    }
+	public String getBasicResourcePath() {
+		String basicPath = getPndDataDir() + File.separator + "resources";
+		Utils.createFolders(basicPath);
+		return basicPath;
+	}
 
-    private static String getSystemProperty(String key, String defaultVal){
-        String val = System.getProperty(key, "");
-        if (StringUtils.isBlank(val)){
-            return defaultVal;
-        }
-        return val;
-    }
+	public String getResourceTmpDir() {
+		String resourceTmpPath = getBasicResourcePath() + File.separator + "tmp";
+		Utils.createFolders(resourceTmpPath);
+		return resourceTmpPath;
+	}
+
+	private String getEnvProperty(String key, String defaultVal) {
+		String val = env.getProperty(key, "");
+		if (StringUtils.isBlank(val)) {
+			return defaultVal;
+		}
+		return val;
+	}
+
+	private static String getSystemProperty(String key, String defaultVal) {
+		String val = System.getProperty(key, "");
+		if (StringUtils.isBlank(val)) {
+			return defaultVal;
+		}
+		return val;
+	}
 }

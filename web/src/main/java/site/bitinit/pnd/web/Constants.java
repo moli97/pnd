@@ -20,6 +20,9 @@ public interface Constants {
 	String MAX_FILE_UPLOAD_SIZE = "pnd.max.uploadFile.size";
 	String MAX_REQUEST_SIZE = "pnd.max.request.size";
 
+	String PND_DISPLAY_PATH = "pnd.display.path";
+	String PND_DISPLAY_URL = "pnd.display.url";
+
 	/**
 	 * config key
 	 */

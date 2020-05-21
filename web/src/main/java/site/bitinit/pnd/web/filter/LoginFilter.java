@@ -27,14 +27,14 @@ public class LoginFilter implements Filter {
 
 	private static final Set<String> ALLOWED_PATHS = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(Constants.API_VERSION + "/login")));
 
-	private static final String IGNORE = "download";
+	private static final String[] IGNORE = { "download", "fileDisplay" };
 
 	@Override
 	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
 
 		HttpServletRequest request = (HttpServletRequest) servletRequest;
 		String path = request.getRequestURI().substring(request.getContextPath().length()).replaceAll("[/]+$", "");
-		if (!ALLOWED_PATHS.contains(path) && !path.contains(IGNORE)) {
+		if (!ALLOWED_PATHS.contains(path) && !isIgnore(path)) {
 			String accessToken = request.getHeader(Constants.ACCESS_TOKEN);
 			if (StringUtils.isBlank(storageHandler.get(accessToken))) {
 				storageHandler.clearInvalid();
@@ -44,5 +44,14 @@ public class LoginFilter implements Filter {
 			RespAgent.get().withAccessToken(accessToken);
 		}
 		filterChain.doFilter(servletRequest, servletResponse);
+	}
+
+	private static boolean isIgnore(String path) {
+		for (String s : IGNORE) {
+			if (path.contains(s)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

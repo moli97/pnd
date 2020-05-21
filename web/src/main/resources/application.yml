@@ -13,6 +13,9 @@ pnd:
       size: 500MB
     request:
       size: 500MB
+  display:
+    path: /data/
+    url: https://data.imoli.top/
 mybatis:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
