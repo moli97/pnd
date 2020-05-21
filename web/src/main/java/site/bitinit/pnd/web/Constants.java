@@ -27,6 +27,8 @@ public interface Constants {
 	 * config key
 	 */
 	String UPLOAD_ROOT_KEY = "upload.root.key";
-
 	String UPLOAD_ROOT_DEFAULT = "/data/default/";
+
+	String ALLOW_ACCESS_DISPLAY = "allow.access.display";
+	String ALLOW_ACCESS_DISPLAY_DEFAULT = "false";
 }
