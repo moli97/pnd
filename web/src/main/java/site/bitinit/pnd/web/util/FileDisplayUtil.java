@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 public class FileDisplayUtil {
 
 	public static List<FileDisplayDto> getSubfolders(File file, boolean showAll) {
-		return getSubfolders(file, o -> showAll ? true : o.isHidden());
+		return getSubfolders(file, o -> showAll ? true : !o.isHidden());
 	}
 
 	public static List<FileDisplayDto> getSubfolders(File file, Predicate<File> predicate) {
